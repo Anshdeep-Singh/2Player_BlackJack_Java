@@ -52,7 +52,11 @@ public class Player {
             if (userChoice.equalsIgnoreCase("X")) {
                 return 1;
             } else {
-                bet = Double.parseDouble(userChoice);
+                try {
+                    bet = Double.parseDouble(userChoice);
+                } catch (InputMismatchException | NumberFormatException e) {
+                    bet = 1;
+                }
                 while (bet < 1 | bet > getPlayerBalance()) {
                     System.out.println("\nMinimum bet should be greater than or equal to 1 and must be less than your current balance");
                     System.out.print("Enter bet: $");
@@ -60,8 +64,8 @@ public class Player {
                         bet = input.nextDouble();
                         input.nextLine();
 
-                    } catch (InputMismatchException e) {
-                        System.out.println("Invalid value,using default bet - $1");
+                    } catch (InputMismatchException | NumberFormatException e) {
+                        System.out.println("Invalid value,using default bet -> $1");
                         bet = 1;
                     }
                 }
