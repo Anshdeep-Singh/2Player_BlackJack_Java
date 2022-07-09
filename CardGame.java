@@ -7,15 +7,21 @@ public class CardGame {
     public static void main(String[] args) {
         //player input
         Scanner input = new Scanner(System.in);
+
         //Two player objects
         Player player1 = new Player();
         Player player2 = new Player();
+
+        Bot bot = new Bot();
+
         //setting initial states
         player1.setPlayerBalance(5);
         player2.setPlayerBalance(5);
+        bot.setPlayerBalance(5);
 
         player1.setStatus(false);
         player2.setStatus(false);
+        bot.setStatus(false);
         final int BOT_BET = 1;
 
         String[] deckPlayer1 = new String[2];
@@ -24,8 +30,6 @@ public class CardGame {
         int turn = 0;
         int exit = 0;
 
-
-        ArrayList<String> usedCards = new ArrayList<String>();
         ArrayList<String> deck = new ArrayList<String>();
         Card cards = new Card();
 
@@ -69,7 +73,7 @@ public class CardGame {
 
 
                 System.out.format("Your Balance: %.2f \n", player1.getPlayerBalance());
-                System.out.format("Computer Balance: %.2f \n", player2.getPlayerBalance());
+                System.out.format("Computer Balance: %.2f \n", bot.getPlayerBalance());
 
                 //Game Begins
 
@@ -97,7 +101,8 @@ public class CardGame {
                             selectCardNumber = (int) (Math.random() * deck.size());
                             newCard = deck.get(selectCardNumber);
                             deck.remove(newCard);
-                            System.out.format("\nYou bet $ %.2f and the new card is %s", bet, newCard);
+                            System.out.format("\nYou bet $ %.2f and the new card is ->", bet);
+                            DisplayCard(newCard);
                             playerWin = WinningCondition(newCard, deckPlayer1);
                             player1.setStatus(playerWin);
                             if (playerWin) {
@@ -122,36 +127,37 @@ public class CardGame {
                 } else {
                     System.out.println("It's computers turn, cards are: ");
                     DisplayDeck(deckPlayer2);
-                    BotChoice = RobotLogic(deckPlayer2, player2.getPlayerBalance());
+
+                    BotChoice = bot.RobotLogic(deckPlayer2,bot.getPlayerBalance());
                     if (BotChoice == 'B') {
-                        player2.setPlayerBalance(player2.getPlayerBalance() - BOT_BET); // because the bot always bets 1
+                        bot.setPlayerBalance(bot.getPlayerBalance() - bot.getBOT_BET()); // because the bot always bets 1
                         selectCardNumber = (int) (Math.random() * deck.size());
                         newCard = deck.get(selectCardNumber);
                         deck.remove(newCard);
-                        System.out.format("\nComputer bet $ %d and the new card is -> ", BOT_BET);
+                        System.out.format("\nComputer bet $ %d and the new card is -> ", bot.getBOT_BET());
                         DisplayCard(newCard);
-                        playerWin = WinningCondition(newCard, deckPlayer1);
-                        player2.setStatus(playerWin);
+                        playerWin = WinningCondition(newCard, deckPlayer2);
+                        bot.setStatus(playerWin);
                         System.out.println();
                         if (playerWin) {
                             System.out.print("\nYou won!");
-                            player2.setPlayerBalance(player2.getPlayerBalance() + 2 * BOT_BET);
+                            bot.setPlayerBalance(bot.getPlayerBalance() + 2 * bot.getBOT_BET());
                         } else {
                             System.out.println("\nComputer lost!");
                         }
                         System.out.println();
 
                     } else {
-                        System.out.println("\nComputer choose to fold");
-                        player2.setPlayerBalance(player2.getPlayerBalance() - 0.5);
+                        System.out.println("\n\nComputer choose to fold");
+                        bot.setPlayerBalance(bot.getPlayerBalance() - 0.5);
                     }
-                    if (player2.getPlayerBalance() <= 0.5) {
+                    if (bot.getPlayerBalance() <= 0.5) {
                         System.out.println("Your balance is less than the minimum balance required to play the game.");
                         System.out.println("PLAYER 1 WON");
                         exit = 1;
                     }
-                }
 
+                }
                 System.out.println();
 
                 turn++;
@@ -170,27 +176,7 @@ public class CardGame {
             System.out.print("------------------------------");
         }
     }
-
-    public static char RobotLogic(String[] deck, double balance) {
-        int firstCard;
-        int secondCard;
-
-        deck[0] = deck[0].substring(0, 2);
-        firstCard = Integer.parseInt(deck[0].strip());
-        deck[1] = deck[1].substring(0, 2);
-        secondCard = Integer.parseInt(deck[1].strip());
-
-        if (balance >= 1) {
-            if (Math.pow(firstCard - secondCard, 2) > 25) {
-                return 'B';
-            } else {
-                return 'F';
-            }
-        } else {
-            return 'F';
-        }
-    }
-
+    
     public static boolean WinningCondition(String newCard, String[] deck) {
 
         int firstCard;
@@ -221,7 +207,6 @@ public class CardGame {
             i = i.replaceAll("13 ", "J ");
             System.out.print(i + " | ");
         }
-
     }
 
     public static void DisplayCard(String i) {
