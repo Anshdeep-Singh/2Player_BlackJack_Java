@@ -50,7 +50,7 @@ public class CardGame {
             if (deck.size() > 3) {
 
                 System.out.println("-------------------------------");
-                System.out.print(" CARDS LEFT IN DECK -> ");
+                System.out.print("CARDS LEFT IN DECK -> ");
                 System.out.println(deck.size());
 
                 System.out.println("-------------------------------");
@@ -78,7 +78,7 @@ public class CardGame {
                 if (turn % 2 == 0) {
                     System.out.println("\nIt's your turn; your cards are:");
                     DisplayDeck(deckPlayer1);
-                    System.out.print("\nBet or Fold? Your choice is :");
+                    System.out.print("\nPress X to exit\n(B)et or (F)old? Your choice is ");
                     userChoice = input.nextLine();
                     if (userChoice.equalsIgnoreCase("B")) {
                         System.out.print("Cool! How much do you wanna bet? : $");
@@ -151,7 +151,7 @@ public class CardGame {
                         exit = 1;
                     }
                 }
-//            System.out.println("Press Enter to continue and X to exit");
+
                 System.out.println();
 
                 turn++;
@@ -223,7 +223,7 @@ public class CardGame {
         }
 
     }
-    
+
     public static void DisplayCard(String i) {
 
         i = i.replaceAll("11 ", "K ");
@@ -232,6 +232,4 @@ public class CardGame {
         i = i.replaceAll("13 ", "J ");
         System.out.print(i);
     }
-
-
 }
