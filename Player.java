@@ -55,6 +55,7 @@ public class Player {
                 try {
                     bet = Double.parseDouble(userChoice);
                 } catch (InputMismatchException | NumberFormatException e) {
+                    System.out.println("Invalid value,using default bet -> $1");
                     bet = 1;
                 }
                 while (bet < 1 | bet > getPlayerBalance()) {
